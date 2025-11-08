@@ -185,7 +185,10 @@ public class MessageService {
         message.setUserId(user.getId());
         message.setDeliveryEmail(user.getEmail());
         message.setUnlockDate(unlockDate);
-        message.setStatus(MessageStatus.LOCKED);
+
+        // Budget tier uses batch deployment (PENDING_BATCH), others deploy immediately (LOCKED)
+        message.setStatus(isBudgetTier(deploymentTier) ? MessageStatus.PENDING_BATCH : MessageStatus.LOCKED);
+
         message.setEncryptionMode("PASSWORD_ENCRYPTION");
         message.setDeploymentTier(deploymentTier);
         message.setPasswordSalt(java.util.Base64.getEncoder().encodeToString(encrypted.getSalt()));
@@ -241,7 +244,10 @@ public class MessageService {
         message.setUserId(user.getId());
         message.setDeliveryEmail(user.getEmail());
         message.setUnlockDate(unlockDate);
-        message.setStatus(MessageStatus.LOCKED);
+
+        // Budget tier uses batch deployment (PENDING_BATCH), others deploy immediately (LOCKED)
+        message.setStatus(isBudgetTier(deploymentTier) ? MessageStatus.PENDING_BATCH : MessageStatus.LOCKED);
+
         message.setEncryptionMode("FULL_ENCRYPTION");
         message.setDeploymentTier(deploymentTier);
         message.setContentHash(bytesToHex(encrypted.getContentHash()));
@@ -282,7 +288,10 @@ public class MessageService {
         message.setUserId(user.getId());
         message.setDeliveryEmail(user.getEmail());
         message.setUnlockDate(unlockDate);
-        message.setStatus(MessageStatus.LOCKED);
+
+        // Budget tier uses batch deployment (PENDING_BATCH), others deploy immediately (LOCKED)
+        message.setStatus(isBudgetTier(deploymentTier) ? MessageStatus.PENDING_BATCH : MessageStatus.LOCKED);
+
         message.setEncryptionMode("NO_ENCRYPTION");
         message.setDeploymentTier(deploymentTier);
 
@@ -466,6 +475,13 @@ public class MessageService {
             deliveredMessages,
             user.getTotalSpentUsd()
         );
+    }
+
+    /**
+     * Check if a tier uses batch deployment.
+     */
+    private boolean isBudgetTier(String tier) {
+        return "budget".equalsIgnoreCase(tier);
     }
 
     /**

@@ -10,12 +10,13 @@ import java.time.LocalDateTime;
  *
  * Lifecycle:
  * 1. DRAFT - User is composing (not yet paid/deployed)
- * 2. DEPLOYING - Payment captured, shares being deployed
- * 3. LOCKED - Shares deployed successfully, waiting for unlock date
- * 4. UNLOCKING - Unlock date reached, retrieving shares
- * 5. UNLOCKED - Shares retrieved, key reconstructed, message decrypted
- * 6. DELIVERED - Message sent to user's email
- * 7. FAILED - Deployment or unlock failed
+ * 2. PENDING_BATCH - Waiting for batch deployment (budget tier)
+ * 3. DEPLOYING - Payment captured, shares being deployed
+ * 4. LOCKED - Shares deployed successfully, waiting for unlock date
+ * 5. UNLOCKING - Unlock date reached, retrieving shares
+ * 6. UNLOCKED - Shares retrieved, key reconstructed, message decrypted
+ * 7. DELIVERED - Message sent to user's email
+ * 8. FAILED - Deployment or unlock failed
  */
 @Entity
 @Table(name = "messages",
@@ -184,12 +185,13 @@ public class Message {
      * Message lifecycle status.
      */
     public enum MessageStatus {
-        DRAFT,       // User is composing
-        DEPLOYING,   // Shares being deployed
-        LOCKED,      // Deployed and waiting
-        UNLOCKING,   // Retrieving shares
-        UNLOCKED,    // Decrypted successfully
-        DELIVERED,   // Sent to email
-        FAILED       // Deployment or unlock failed
+        DRAFT,          // User is composing
+        PENDING_BATCH,  // Waiting for batch deployment (budget tier)
+        DEPLOYING,      // Shares being deployed
+        LOCKED,         // Deployed and waiting
+        UNLOCKING,      // Retrieving shares
+        UNLOCKED,       // Decrypted successfully
+        DELIVERED,      // Sent to email
+        FAILED          // Deployment or unlock failed
     }
 }

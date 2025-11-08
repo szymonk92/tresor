@@ -54,4 +54,14 @@ public interface MessageRepository extends JpaRepository<Message, String> {
      * Count messages by user and status.
      */
     long countByUserIdAndStatus(String userId, MessageStatus status);
+
+    /**
+     * Find messages pending batch deployment.
+     */
+    List<Message> findByStatus(MessageStatus status);
+
+    /**
+     * Find messages pending batch deployment by tier.
+     */
+    List<Message> findByStatusAndDeploymentTier(MessageStatus status, String deploymentTier);
 }
