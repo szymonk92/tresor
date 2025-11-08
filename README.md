@@ -39,8 +39,48 @@ Unlike traditional "scheduled email" services, Tresor uses:
 - ✅ End-to-end integration tests
 - ✅ Application startup verified
 
+## Deployment Tiers: Choose Your Security Level
+
+Tresor offers **flexible deployment options** to match your needs and budget:
+
+### 💰 Budget Tier - $0.57 (Recommended for 90% of users)
+- **Blockchains**: Polygon + Base + Optimism (ultra-cheap L2s)
+- **Deployment**: Within 24 hours (batched)
+- **Perfect for**: Personal time capsules, birthday messages, reminders
+- **Savings**: 96% cheaper than Premium tier
+
+### ⚡ Standard Tier - $3.00
+- **Blockchains**: Arbitrum + Polygon + Avalanche (fast L2s)
+- **Deployment**: Instant
+- **Perfect for**: Time-sensitive messages, important family communications
+- **Savings**: 77% cheaper than Premium tier
+
+### 🏆 Premium Tier - $13.00 **SECURED BY BITCOIN + ETHEREUM**
+- **Blockchains**: Bitcoin + Ethereum + Arbitrum
+- **Deployment**: Instant
+- **Security**: Maximum (20+ years proven, highest decentralization)
+- **Perfect for**: Legal wills, business documents, generational messages
+- **Value**: "Secured by Bitcoin blockchain" - the gold standard
+
+### 🏢 Enterprise Tier - $25.00
+- **Blockchains**: 7 chains with 5-of-7 threshold
+- **Redundancy**: Survives 2 blockchain failures
+- **SLA**: Guaranteed uptime and delivery
+- **Perfect for**: Business escrow, compliance, mission-critical data
+
+**Why the flexibility?**
+- Most users don't need Bitcoin's premium security (Budget tier is excellent)
+- Power users get Bitcoin/Ethereum for maximum trust and longevity
+- Business users get enterprise-grade redundancy
+- **You choose what matters to you: cost or maximum security**
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for technical details and [COST_OPTIMIZATION.md](./COST_OPTIMIZATION.md) for full cost analysis.
+
 ## Quick Links
 
+- [Architecture & Blockchain Flexibility](./ARCHITECTURE.md) ⭐ **NEW**
+- [Cost Optimization Strategy](./COST_OPTIMIZATION.md) ⭐ **NEW**
+- [Testing & Simplification](./TESTING_AND_SIMPLIFICATION.md) ⭐ **NEW**
 - [Product Requirements Document (PRD)](./PRD.md)
 - [Implementation Details](./IMPLEMENTATION_DETAILS.md)
 - [Multimedia Analysis](./MULTIMEDIA_ANALYSIS.md)
