@@ -1,0 +1,120 @@
+spring:
+  application:
+    name: tresor-api
+
+  # Database configuration (H2 for development, PostgreSQL for production)
+  datasource:
+    url: jdbc:h2:mem:tresordb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # JPA/Hibernate configuration
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+  # Flyway (disabled for MVP - using Hibernate DDL)
+  flyway:
+    enabled: false
+
+  # H2 Console (for development)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # Jackson JSON configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+# Server configuration
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-stacktrace: never
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    io.tresor: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+
+# Tresor application configuration
+tresor:
+  # Encryption settings
+  encryption:
+    algorithm: AES-256-GCM
+    key-size: 256
+    iv-size: 12
+
+  # Secret sharing settings
+  secret-sharing:
+    total-shares: 5
+    threshold: 3
+    scheme: shamir
+
+  # Blockchain deployment settings
+  blockchain:
+    default-chains:
+      - BITCOIN
+      - ARBITRUM
+      - ETHEREUM
+    enable-self-custody: true
+    enable-arweave: false
+
+  # Unlock scheduler settings
+  scheduler:
+    unlock-check-interval: PT10M  # Every 10 minutes
+    retry-max-attempts: 10
+    retry-max-age-days: 7
+
+  # Email settings (placeholder for production)
+  email:
+    enabled: false
+    from: noreply@tresor.app
+
+---
+# Production profile
+spring:
+  config:
+    activate:
+      on-profile: production
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/tresor}
+    driver-class-name: org.postgresql.Driver
+    username: ${DATABASE_USERNAME:tresor}
+    password: ${DATABASE_PASSWORD}
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  h2:
+    console:
+      enabled: false
+
+server:
+  error:
+    include-stacktrace: never
+
+logging:
+  level:
+    root: WARN
+    io.tresor: INFO
+    org.hibernate.SQL: WARN
