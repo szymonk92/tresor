@@ -119,11 +119,56 @@ public class Message {
     @Column(name = "error_message", columnDefinition = "TEXT")
     private String errorMessage;
 
+    /**
+     * Encryption mode used for this message.
+     */
+    @Column(name = "encryption_mode", nullable = false, length = 20)
+    private String encryptionMode = "PASSWORD_ENCRYPTION"; // Default
+
+    /**
+     * Deployment tier (budget, standard, premium, enterprise).
+     */
+    @Column(name = "deployment_tier", length = 20)
+    private String deploymentTier = "budget"; // Default
+
+    /**
+     * Password salt (for PASSWORD_ENCRYPTION mode).
+     * Base64-encoded 32-byte random salt.
+     */
+    @Column(name = "password_salt", length = 64)
+    private String passwordSalt;
+
+    /**
+     * Password hint (for PASSWORD_ENCRYPTION mode).
+     * IMPORTANT: This is NOT the password itself!
+     */
+    @Column(name = "password_hint", length = 500)
+    private String passwordHint;
+
+    /**
+     * PBKDF2 iterations (for PASSWORD_ENCRYPTION mode).
+     */
+    @Column(name = "pbkdf2_iterations")
+    private Integer pbkdf2Iterations;
+
+    /**
+     * IV (initialization vector) for encryption.
+     * Base64-encoded 12-byte random IV.
+     */
+    @Column(name = "encryption_iv", length = 32)
+    private String encryptionIv;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         if (status == null) {
             status = MessageStatus.DRAFT;
+        }
+        if (encryptionMode == null) {
+            encryptionMode = "PASSWORD_ENCRYPTION";
+        }
+        if (deploymentTier == null) {
+            deploymentTier = "budget";
         }
     }
 

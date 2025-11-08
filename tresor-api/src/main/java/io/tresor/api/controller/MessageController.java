@@ -40,7 +40,11 @@ public class MessageController {
      * POST /api/messages
      * {
      *   "textContent": "Dear future self...",
-     *   "unlockDate": "2035-01-15T10:00:00"
+     *   "unlockDate": "2035-01-15T10:00:00",
+     *   "encryptionMode": "PASSWORD_ENCRYPTION",  // Optional: FULL_ENCRYPTION, PASSWORD_ENCRYPTION, NO_ENCRYPTION
+     *   "password": "mysecretpassword",          // Required for PASSWORD_ENCRYPTION
+     *   "passwordHint": "My dog's name",         // Optional hint
+     *   "deploymentTier": "budget"               // Optional: budget, standard, premium, enterprise
      * }
      */
     @PostMapping
@@ -49,12 +53,17 @@ public class MessageController {
         @RequestBody CreateMessageRequest request
     ) {
         try {
-            log.info("Creating message for user: {}", userId);
+            log.info("Creating message for user: {}, mode: {}, tier: {}",
+                userId, request.getEncryptionMode(), request.getDeploymentTier());
 
             Message message = messageService.createMessage(
                 userId,
                 request.getTextContent(),
-                request.getUnlockDate()
+                request.getUnlockDate(),
+                request.getEncryptionMode(),
+                request.getPassword(),
+                request.getPasswordHint(),
+                request.getDeploymentTier()
             );
 
             MessageResponse response = MessageResponse.fromMessage(message);
@@ -193,6 +202,14 @@ public class MessageController {
     public static class CreateMessageRequest {
         private String textContent;
         private LocalDateTime unlockDate;
+
+        // Encryption options
+        private String encryptionMode;  // "FULL_ENCRYPTION", "PASSWORD_ENCRYPTION", "NO_ENCRYPTION"
+        private String password;        // Required for PASSWORD_ENCRYPTION mode
+        private String passwordHint;    // Optional hint (NOT the password!)
+
+        // Deployment options
+        private String deploymentTier;  // "budget", "standard", "premium", "enterprise"
     }
 
     @Data
@@ -212,6 +229,11 @@ public class MessageController {
         private LocalDateTime unlockedAt;
         private LocalDateTime deliveredAt;
 
+        // New fields
+        private String encryptionMode;
+        private String deploymentTier;
+        private String passwordHint;  // For PASSWORD_ENCRYPTION mode
+
         public static MessageResponse fromMessage(Message message) {
             MessageResponse response = new MessageResponse();
             response.setSuccess(true);
@@ -225,6 +247,9 @@ public class MessageController {
             response.setCostUsd(message.getCostUsd());
             response.setUnlockedAt(message.getUnlockedAt());
             response.setDeliveredAt(message.getDeliveredAt());
+            response.setEncryptionMode(message.getEncryptionMode());
+            response.setDeploymentTier(message.getDeploymentTier());
+            response.setPasswordHint(message.getPasswordHint());
             return response;
         }
 
