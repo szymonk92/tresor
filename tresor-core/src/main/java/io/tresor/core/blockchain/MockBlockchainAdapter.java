@@ -209,42 +209,68 @@ public class MockBlockchainAdapter implements ChainAdapter {
     private long getCurrentMockBlockHeight(Blockchain blockchain) {
         // Return realistic mock block heights
         switch (blockchain) {
+            // Layer 1
             case BITCOIN:
-                return 850000; // Approximate current Bitcoin height
+                return 850000;    // Approximate current Bitcoin height
             case ETHEREUM:
-                return 18500000; // Approximate current Ethereum height
+                return 18500000;  // Approximate current Ethereum height
+            case POLYGON:
+                return 50000000;  // Polygon block height
+            case AVALANCHE:
+                return 40000000;  // Avalanche C-Chain
+            case CARDANO:
+                return 10000000;  // Cardano slot number
+
+            // Layer 2
             case ARBITRUM:
                 return 150000000; // Arbitrum has higher block numbers
-            case POLYGON:
-                return 50000000; // Polygon block height
-            case CARDANO:
-                return 10000000; // Cardano slot number
+            case OPTIMISM:
+                return 110000000; // Optimism block height
+            case BASE:
+                return 8000000;   // Base (newer L2)
+
+            // Special
             case SELF_CUSTODY:
-                return 0; // Not applicable
+                return 0;         // Not applicable
             case ARWEAVE:
-                return 1400000; // Arweave block height
+                return 1400000;   // Arweave block height
+
             default:
                 return 1000000;
         }
     }
 
     private double estimateCost(Blockchain blockchain) {
-        // Mock costs (realistic estimates)
+        // Mock costs (realistic estimates based on current gas prices)
         switch (blockchain) {
+            // Layer 1 (expensive)
             case BITCOIN:
-                return 7.0; // Bitcoin OP_RETURN
+                return 7.0;  // Bitcoin OP_RETURN with current fees
             case ETHEREUM:
-                return 5.0; // Ethereum gas
-            case ARBITRUM:
-                return 0.50; // Cheap L2
+                return 5.0;  // Ethereum smart contract call (~100k gas @ 50 gwei)
+
+            // Layer 1 (cheap alternatives)
             case POLYGON:
-                return 0.01; // Very cheap
+                return 0.01; // Polygon PoS (very cheap gas)
+            case AVALANCHE:
+                return 0.50; // Avalanche C-Chain
             case CARDANO:
-                return 1.0; // Cardano metadata
+                return 1.0;  // Cardano metadata transaction
+
+            // Layer 2 (ultra-cheap)
+            case ARBITRUM:
+                return 0.50; // Arbitrum One (Optimistic Rollup)
+            case OPTIMISM:
+                return 0.05; // Optimism (Optimistic Rollup)
+            case BASE:
+                return 0.01; // Base (Coinbase L2, subsidized)
+
+            // Special purpose
             case SELF_CUSTODY:
-                return 0.0; // Free
+                return 0.0;  // Free (local file storage)
             case ARWEAVE:
-                return 0.50; // Permanent storage
+                return 0.50; // Arweave permanent storage (per 10 MB)
+
             default:
                 return 1.0;
         }

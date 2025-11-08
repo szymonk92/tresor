@@ -66,12 +66,68 @@ tresor:
     threshold: 3
     scheme: shamir
 
-  # Blockchain deployment settings
+  # Deployment tiers (cost optimization)
+  deployment-tiers:
+    budget:
+      name: "Budget"
+      cost-usd: 0.57
+      description: "24-hour batch deployment to cheap L2s"
+      blockchains:
+        - POLYGON      # $0.01
+        - BASE         # $0.01
+        - OPTIMISM     # $0.05
+      batch-deployment: true
+      batch-delay-hours: 24
+      instant-deployment: false
+      recommended: true
+
+    standard:
+      name: "Standard"
+      cost-usd: 3.00
+      description: "Instant deployment to fast L2s"
+      blockchains:
+        - ARBITRUM     # $0.50
+        - POLYGON      # $0.01
+        - AVALANCHE    # $0.50
+      batch-deployment: false
+      instant-deployment: true
+      recommended: false
+
+    premium:
+      name: "Premium"
+      cost-usd: 13.00
+      description: "Maximum security with Bitcoin + Ethereum"
+      blockchains:
+        - BITCOIN      # $7.00
+        - ETHEREUM     # $5.00
+        - ARBITRUM     # $0.50
+      batch-deployment: false
+      instant-deployment: true
+      max-security: true
+      recommended: false
+
+    enterprise:
+      name: "Enterprise"
+      cost-usd: 25.00
+      description: "Maximum redundancy with SLA guarantee"
+      total-shares: 7
+      threshold: 5
+      blockchains:
+        - BITCOIN      # $7.00
+        - ETHEREUM     # $5.00
+        - ARBITRUM     # $0.50
+        - POLYGON      # $0.01
+        - BASE         # $0.01
+        - OPTIMISM     # $0.05
+        - AVALANCHE    # $0.50
+      batch-deployment: false
+      instant-deployment: true
+      sla-guarantee: true
+      recommended: false
+
+  # Blockchain deployment settings (legacy - use tiers above)
   blockchain:
-    default-chains:
-      - BITCOIN
-      - ARBITRUM
-      - ETHEREUM
+    default-tier: budget  # Use budget tier by default
     enable-self-custody: true
     enable-arweave: false
 
@@ -80,6 +136,13 @@ tresor:
     unlock-check-interval: PT10M  # Every 10 minutes
     retry-max-attempts: 10
     retry-max-age-days: 7
+
+  # Batch deployment settings
+  batch:
+    enabled: true
+    schedule-cron: "0 0 0 * * *"  # Daily at midnight
+    min-messages-for-batch: 1      # Batch even single messages for consistency
+    max-wait-hours: 24             # Deploy within 24 hours regardless
 
   # Email settings (placeholder for production)
   email:

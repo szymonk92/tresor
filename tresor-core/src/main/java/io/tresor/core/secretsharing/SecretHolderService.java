@@ -222,13 +222,21 @@ public interface SecretHolderService {
      * Supported blockchains for secret holding.
      */
     enum Blockchain {
-        BITCOIN("Bitcoin", 10 * 60), // ~10 min blocks
-        ETHEREUM("Ethereum", 12),     // ~12 sec blocks
-        ARBITRUM("Arbitrum", 1),      // ~1 sec blocks
-        POLYGON("Polygon", 2),        // ~2 sec blocks
-        CARDANO("Cardano", 20),       // ~20 sec blocks
-        SELF_CUSTODY("Self-custody", 0),
-        ARWEAVE("Arweave", 2 * 60);   // ~2 min blocks
+        // Layer 1 blockchains
+        BITCOIN("Bitcoin", 10 * 60),    // ~10 min blocks, $7.00/tx
+        ETHEREUM("Ethereum", 12),        // ~12 sec blocks, $5.00/tx
+        POLYGON("Polygon", 2),           // ~2 sec blocks, $0.01/tx
+        AVALANCHE("Avalanche", 2),       // ~2 sec blocks, $0.50/tx
+        CARDANO("Cardano", 20),          // ~20 sec blocks, $1.00/tx
+
+        // Layer 2 solutions (cheap!)
+        ARBITRUM("Arbitrum", 1),         // ~1 sec blocks, $0.50/tx
+        OPTIMISM("Optimism", 2),         // ~2 sec blocks, $0.05/tx
+        BASE("Base", 2),                 // ~2 sec blocks, $0.01/tx (Coinbase L2)
+
+        // Special purpose
+        SELF_CUSTODY("Self-custody", 0), // Free
+        ARWEAVE("Arweave", 2 * 60);      // ~2 min blocks, $0.50/10MB
 
         private final String name;
         private final int avgBlockTimeSeconds;
