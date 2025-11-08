@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: tresor-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tresor
+      POSTGRES_USER: tresor
+      POSTGRES_PASSWORD: tresor_password_change_in_production
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tresor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tresor-network
+
+  # Redis for distributed locks and caching
+  redis:
+    image: redis:7-alpine
+    container_name: tresor-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - tresor-network
+
+  # Tresor API
+  tresor-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tresor-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      # Spring Boot configuration
+      SPRING_PROFILES_ACTIVE: docker
+
+      # Database
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tresor
+      SPRING_DATASOURCE_USERNAME: tresor
+      SPRING_DATASOURCE_PASSWORD: tresor_password_change_in_production
+
+      # Redis
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
+      # Batch deployment schedule (daily at midnight)
+      TRESOR_BATCH_SCHEDULE_CRON: "0 0 0 * * *"
+
+      # Arweave (optional for MVP)
+      ARWEAVE_GATEWAY: https://arweave.net
+
+      # JVM options
+      JAVA_OPTS: "-Xms512m -Xmx1024m -XX:+UseG1GC"
+    ports:
+      - "8080:8080"
+    volumes:
+      - tresor_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/messages/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - tresor-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  tresor_logs:
+    driver: local
+
+networks:
+  tresor-network:
+    driver: bridge
