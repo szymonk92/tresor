@@ -24,8 +24,20 @@ Unlike traditional "scheduled email" services, Tresor uses:
 
 ## Project Status
 
-**Current Phase:** Architecture & Design ✅
-**Next Phase:** Implementation (Starting with crypto core)
+**Current Phase:** MVP Implementation ✅
+**Next Phase:** Production deployment (blockchain integrations, Arweave)
+
+### Completed
+- ✅ Core encryption (AES-256-GCM)
+- ✅ Shamir Secret Sharing (3-of-5 threshold)
+- ✅ Multi-chain time-lock service
+- ✅ Mock blockchain adapters
+- ✅ Self-custody adapter (file-based)
+- ✅ Database models (JPA/Hibernate)
+- ✅ REST API endpoints
+- ✅ Security configuration
+- ✅ End-to-end integration tests
+- ✅ Application startup verified
 
 ## Quick Links
 
@@ -277,12 +289,25 @@ Once MVP is complete, we'll welcome:
 
 ## License
 
-**Not yet decided** (will be determined before public release)
+This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
 
-**Planned:**
-- AGPL for backend (tresor-api, tresor-auth)
-- MIT for libraries (tresor-core, tresor-storage-*)
-- MIT for frontend
+### Why Apache 2.0?
+
+✅ **Open source** - Fully auditable, transparent code
+✅ **Permissive** - Commercial use allowed
+✅ **Attribution required** - Users must mention the technology
+✅ **Patent grant** - Protection against patent trolls
+✅ **Industry standard** - Used by Apache, Google, Microsoft
+
+### Attribution Requirements
+
+When using Tresor, you must acknowledge the cryptographic technologies:
+- AES-256-GCM encryption (NIST FIPS 197)
+- Shamir's Secret Sharing (Adi Shamir, 1979)
+- Multi-chain time-lock encryption
+- Bitcoin CLTV time-locks
+- Ethereum/EVM smart contracts
+- Arweave permanent storage
 
 ---
 
