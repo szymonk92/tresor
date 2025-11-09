@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 public class EncryptedMessage {
 
     /**
+     * Unique message ID
+     */
+    private String id;
+
+    /**
      * Version of the encryption format (for future compatibility)
      */
     private String version;
@@ -22,6 +27,11 @@ public class EncryptedMessage {
      * Encrypted content (text + files)
      */
     private byte[] encryptedPayload;
+
+    /**
+     * Encryption key (for Shamir secret sharing)
+     */
+    private byte[] encryptionKey;
 
     /**
      * Time-locked encryption key

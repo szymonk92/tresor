@@ -215,6 +215,11 @@ public class ShamirSecretSharing {
         private BigInteger y;
 
         /**
+         * Prime modulus used for this share
+         */
+        private BigInteger prime;
+
+        /**
          * Threshold (minimum shares needed to reconstruct)
          */
         private int threshold;
@@ -223,6 +228,27 @@ public class ShamirSecretSharing {
          * Total number of shares created
          */
         private int totalShares;
+
+        /**
+         * Constructor for creating a share
+         */
+        public Share(int x, BigInteger y, int threshold, int totalShares) {
+            this.x = x;
+            this.y = y;
+            this.threshold = threshold;
+            this.totalShares = totalShares;
+        }
+
+        /**
+         * Full constructor with all fields
+         */
+        public Share(int x, BigInteger y, BigInteger prime, int threshold, int totalShares) {
+            this.x = x;
+            this.y = y;
+            this.prime = prime;
+            this.threshold = threshold;
+            this.totalShares = totalShares;
+        }
 
         /**
          * Convert share to bytes for storage/transmission.

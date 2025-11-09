@@ -18,6 +18,11 @@ public class PlainMessage {
     private String textContent;
 
     /**
+     * Email address for delivery (optional)
+     */
+    private String deliveryEmail;
+
+    /**
      * Attached files (images, audio, video)
      */
     private List<AttachedFile> files;
@@ -33,11 +38,26 @@ public class PlainMessage {
     }
 
     @Data
-    @Builder
     public static class AttachedFile {
         private String filename;
-        private String mimeType;
-        private byte[] data;
+        private String contentType;
+        private byte[] fileData;
         private long sizeBytes;
+
+        public AttachedFile(String filename, String contentType, byte[] fileData, long sizeBytes) {
+            this.filename = filename;
+            this.contentType = contentType;
+            this.fileData = fileData;
+            this.sizeBytes = sizeBytes;
+        }
+
+        // Alias methods for compatibility
+        public String getFileName() {
+            return filename;
+        }
+
+        public byte[] getData() {
+            return fileData;
+        }
     }
 }

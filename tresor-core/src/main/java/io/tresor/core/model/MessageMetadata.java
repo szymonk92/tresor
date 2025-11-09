@@ -37,6 +37,16 @@ public class MessageMetadata {
      */
     private String[] tags;
 
+    /**
+     * Deployment receipt (for multi-chain deployments)
+     */
+    private Object deploymentReceipt;
+
+    /**
+     * Shamir secret sharing threshold (e.g., 3 for 3-of-5)
+     */
+    private int threshold;
+
     public enum ContentType {
         TEXT,
         IMAGE,
