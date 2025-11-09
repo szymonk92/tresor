@@ -198,7 +198,7 @@ public class PasswordEncryptionService {
         if (message.getFiles() != null) {
             for (PlainMessage.AttachedFile file : message.getFiles()) {
                 // File name
-                byte[] nameBytes = file.getFileName().getBytes("UTF-8");
+                byte[] nameBytes = file.getFilename().getBytes("UTF-8");
                 writeInt(baos, nameBytes.length);
                 baos.write(nameBytes);
 

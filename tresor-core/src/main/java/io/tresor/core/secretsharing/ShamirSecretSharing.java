@@ -96,6 +96,7 @@ public class ShamirSecretSharing {
             shares.add(Share.builder()
                 .x(x)
                 .y(y)
+                .prime(PRIME)
                 .threshold(k)
                 .totalShares(n)
                 .build());
@@ -287,6 +288,7 @@ public class ShamirSecretSharing {
             return Share.builder()
                 .x(x)
                 .y(y)
+                .prime(PRIME)
                 .threshold(threshold)
                 .totalShares(totalShares)
                 .build();

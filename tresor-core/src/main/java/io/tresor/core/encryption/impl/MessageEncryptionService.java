@@ -185,8 +185,8 @@ public class MessageEncryptionService {
                 baos.write(nameBytes);
 
                 // File data
-                writeInt(baos, file.getData().length);
-                baos.write(file.getData());
+                writeInt(baos, file.getFileData().length);
+                baos.write(file.getFileData());
 
                 // Content type
                 byte[] typeBytes = file.getContentType().getBytes("UTF-8");
