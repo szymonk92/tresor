@@ -1,7 +1,7 @@
 package io.tresor.core.encryption.impl;
 
 import io.tresor.core.encryption.EncryptionException;
-import io.tresor.core.encryption.PlainMessage;
+import io.tresor.core.model.PlainMessage;
 import io.tresor.core.encryption.PasswordEncryptedMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
