@@ -230,8 +230,8 @@ public class SelfCustodyAdapter implements ChainAdapter {
         try (DataOutputStream out = new DataOutputStream(
             new BufferedOutputStream(Files.newOutputStream(filePath)))) {
 
-            // Write file format version
-            out.writeInt(1);
+            // Write file format version (2 = includes threshold and totalShares)
+            out.writeInt(2);
 
             // Write unlock date
             out.writeLong(unlockDate.toEpochSecond(ZoneOffset.UTC));
@@ -247,6 +247,10 @@ public class SelfCustodyAdapter implements ChainAdapter {
             byte[] yBytes = share.getY().toByteArray();
             out.writeInt(yBytes.length);
             out.write(yBytes);
+
+            // Write threshold and totalShares (new in version 2)
+            out.writeInt(share.getThreshold());
+            out.writeInt(share.getTotalShares());
         }
     }
 
@@ -256,7 +260,7 @@ public class SelfCustodyAdapter implements ChainAdapter {
 
             // Read file format version
             int version = in.readInt();
-            if (version != 1) {
+            if (version != 1 && version != 2) {
                 throw new IOException("Unsupported file format version: " + version);
             }
 
@@ -281,7 +285,15 @@ public class SelfCustodyAdapter implements ChainAdapter {
             java.math.BigInteger prime = new java.math.BigInteger(primeBytes);
             java.math.BigInteger y = new java.math.BigInteger(yBytes);
 
-            ShamirSecretSharing.Share share = new ShamirSecretSharing.Share(x, y, prime);
+            // Read threshold and totalShares (if version 2)
+            int threshold = 3;  // Default for version 1
+            int totalShares = 5;  // Default for version 1
+            if (version >= 2) {
+                threshold = in.readInt();
+                totalShares = in.readInt();
+            }
+
+            ShamirSecretSharing.Share share = new ShamirSecretSharing.Share(x, y, prime, threshold, totalShares);
 
             return new ShareFileData(share, unlockDate);
         }

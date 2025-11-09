@@ -241,8 +241,9 @@ public class MessageEncryptionService {
 
             files.add(PlainMessage.AttachedFile.builder()
                 .filename(filename)
-                .data(fileData)
+                .fileData(fileData)
                 .contentType(contentType)
+                .sizeBytes(fileData.length)
                 .build());
         }
 

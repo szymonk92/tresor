@@ -260,7 +260,12 @@ public class PasswordEncryptionService {
             String contentType = new String(data, offset, typeLength, "UTF-8");
             offset += typeLength;
 
-            files.add(new PlainMessage.AttachedFile(fileName, fileData, contentType));
+            files.add(PlainMessage.AttachedFile.builder()
+                .filename(fileName)
+                .contentType(contentType)
+                .fileData(fileData)
+                .sizeBytes(fileData.length)
+                .build());
         }
 
         return PlainMessage.builder()
