@@ -164,7 +164,7 @@ public class DeploymentOrchestrator {
             // Deploy share
             ShareDeployment deployment = adapter.deploy(share, unlockDate, config);
 
-            return DeploymentResult.success(deployment);
+            return DeploymentResult.success(deployment, share);
 
         } catch (Exception e) {
             log.error("Failed to deploy to {}: {}", blockchain, e.getMessage());
@@ -377,10 +377,11 @@ public class DeploymentOrchestrator {
         private Exception error;
         private boolean retryable;
 
-        public static DeploymentResult success(ShareDeployment deployment) {
+        public static DeploymentResult success(ShareDeployment deployment, ShamirSecretSharing.Share share) {
             return DeploymentResult.builder()
                 .success(true)
                 .deployment(deployment)
+                .share(share)
                 .blockchain(deployment.getBlockchain())
                 .build();
         }

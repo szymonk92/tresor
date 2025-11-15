@@ -65,6 +65,14 @@ public class PasswordEncryptionService {
         String passwordHint
     ) throws EncryptionException {
 
+        // Validate inputs
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+        if (message == null) {
+            throw new IllegalArgumentException("Message cannot be null");
+        }
+
         try {
             // Generate random salt
             byte[] salt = new byte[SALT_LENGTH];
@@ -185,8 +193,9 @@ public class PasswordEncryptionService {
         writeInt(baos, textBytes.length);
         baos.write(textBytes);
 
-        // Write delivery email
-        byte[] emailBytes = message.getDeliveryEmail().getBytes("UTF-8");
+        // Write delivery email (empty string if null)
+        String deliveryEmail = message.getDeliveryEmail() != null ? message.getDeliveryEmail() : "";
+        byte[] emailBytes = deliveryEmail.getBytes("UTF-8");
         writeInt(baos, emailBytes.length);
         baos.write(emailBytes);
 
