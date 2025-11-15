@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Message - Tresor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F9FAFB;
+            color: #111827;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #6B7280;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #F3F4F6;
+            color: #6366F1;
+        }
+
+        .nav-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .help-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #6B7280;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .help-btn:hover {
+            background: #F3F4F6;
+            color: #6366F1;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Progress Steps */
+        .progress-container {
+            margin-bottom: 3rem;
+        }
+
+        .step-indicator {
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
+            border-radius: 999px;
+            transition: width 0.3s;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: #6B7280;
+            margin-bottom: 2rem;
+        }
+
+        /* Tier Cards */
+        .tiers {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-card {
+            background: white;
+            border: 3px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tier-card:hover {
+            border-color: #6366F1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .tier-card.selected {
+            border-color: #6366F1;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .tier-card.recommended {
+            border-color: #6366F1;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -12px;
+            right: 2rem;
+            background: #6366F1;
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-name-section {
+            flex: 1;
+        }
+
+        .tier-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #6366F1;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-features li {
+            padding: 0.5rem 0;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-features li::before {
+            content: '✓';
+            color: #10B981;
+            font-weight: 700;
+        }
+
+        .tier-best-for {
+            background: #F3F4F6;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .tier-best-for strong {
+            color: #111827;
+        }
+
+        .tier-select-btn {
+            width: 100%;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #6366F1;
+            color: #6366F1;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+
+        .tier-card.selected .tier-select-btn {
+            background: #6366F1;
+            color: white;
+        }
+
+        .tier-select-btn:hover {
+            background: #6366F1;
+            color: white;
+        }
+
+        /* Compare Link */
+        .compare-link {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .compare-link a {
+            color: #6366F1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Navigation Buttons */
+        .form-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #6B7280;
+            border: 2px solid #E5E7EB;
+        }
+
+        .btn-secondary:hover {
+            border-color: #6366F1;
+            color: #6366F1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main {
+                padding: 1rem;
+            }
+
+            .tier-header {
+                flex-direction: column;
+            }
+
+            .tier-price {
+                margin-top: 1rem;
+            }
+
+            .form-nav {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-left">
+            <button class="back-btn">←</button>
+            <div class="nav-title">Create New Message</div>
+        </div>
+        <button class="help-btn">?</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Progress Indicator -->
+        <div class="progress-container">
+            <div class="step-indicator">Step 3 of 4: Choose Deployment Tier</div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar" style="width: 75%"></div>
+            </div>
+        </div>
+
+        <!-- Section Header -->
+        <h1 class="section-title">Select Deployment Tier</h1>
+        <p class="section-subtitle">Choose how you want your message to be deployed and secured</p>
+
+        <!-- Tier Cards -->
+        <div class="tiers">
+            <!-- Budget Tier -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name-section">
+                        <div class="tier-icon">💰</div>
+                        <div class="tier-name">Budget</div>
+                    </div>
+                    <div class="tier-price">$0.50</div>
+                </div>
+
+                <ul class="tier-features">
+                    <li>Batch deployment (daily at midnight)</li>
+                    <li>Password encryption (PBKDF2 + AES-256-GCM)</li>
+                    <li>Email delivery notification</li>
+                    <li>Single self-custody storage</li>
+                </ul>
+
+                <div class="tier-best-for">
+                    <strong>Best for:</strong> Personal notes, casual messages, and non-critical communications
+                </div>
+
+                <button class="tier-select-btn">Select Budget</button>
+            </div>
+
+            <!-- Standard Tier -->
+            <div class="tier-card recommended selected">
+                <span class="recommended-badge">RECOMMENDED</span>
+
+                <div class="tier-header">
+                    <div class="tier-name-section">
+                        <div class="tier-icon">⭐</div>
+                        <div class="tier-name">Standard</div>
+                    </div>
+                    <div class="tier-price">$3.00</div>
+                </div>
+
+                <ul class="tier-features">
+                    <li>Immediate deployment</li>
+                    <li>3-of-5 Shamir Secret Sharing</li>
+                    <li>Multi-blockchain distribution (Bitcoin, Ethereum, Polygon)</li>
+                    <li>Full AES-256-GCM encryption</li>
+                    <li>Email delivery notification</li>
+                    <li>Automatic redundancy</li>
+                </ul>
+
+                <div class="tier-best-for">
+                    <strong>Best for:</strong> Important messages, birthday wishes, and time capsules you don't want to risk losing
+                </div>
+
+                <button class="tier-select-btn">✓ Selected</button>
+            </div>
+
+            <!-- Premium Tier -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name-section">
+                        <div class="tier-icon">💎</div>
+                        <div class="tier-name">Premium</div>
+                    </div>
+                    <div class="tier-price">$13.00</div>
+                </div>
+
+                <ul class="tier-features">
+                    <li>Immediate deployment</li>
+                    <li>5-of-7 Shamir Secret Sharing</li>
+                    <li>Extended multi-blockchain distribution (BTC, ETH, Polygon, Arbitrum, Base, Arweave, Self-custody)</li>
+                    <li>Full AES-256-GCM encryption</li>
+                    <li>Maximum redundancy and fault tolerance</li>
+                    <li>Priority support</li>
+                    <li>Larger file attachments (up to 10MB)</li>
+                </ul>
+
+                <div class="tier-best-for">
+                    <strong>Best for:</strong> Critical business communications, legal documents, and long-term time capsules (5+ years)
+                </div>
+
+                <button class="tier-select-btn">Select Premium</button>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <div class="tier-name-section">
+                        <div class="tier-icon">🏢</div>
+                        <div class="tier-name">Enterprise</div>
+                    </div>
+                    <div class="tier-price">$25.00</div>
+                </div>
+
+                <ul class="tier-features">
+                    <li>Immediate deployment</li>
+                    <li>7-of-10 Shamir Secret Sharing</li>
+                    <li>Maximum blockchain distribution</li>
+                    <li>Custom encryption parameters</li>
+                    <li>Dedicated support</li>
+                    <li>SLA guarantee</li>
+                    <li>Large file attachments (up to 50MB)</li>
+                    <li>API access for integration</li>
+                </ul>
+
+                <div class="tier-best-for">
+                    <strong>Best for:</strong> Enterprise applications, compliance requirements, and mission-critical time-locked data
+                </div>
+
+                <button class="tier-select-btn">Select Enterprise</button>
+            </div>
+        </div>
+
+        <!-- Compare Link -->
+        <div class="compare-link">
+            <a href="#">Compare All Tiers in Detail →</a>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-nav">
+            <button class="btn btn-secondary">← Back</button>
+            <button class="btn btn-primary">Next: Security Settings →</button>
+        </div>
+    </main>
+
+    <script>
+        // Simple tier selection
+        document.querySelectorAll('.tier-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
+
+                // Add selected class to clicked card
+                this.classList.add('selected');
+
+                // Update button text
+                document.querySelectorAll('.tier-select-btn').forEach(btn => {
+                    btn.textContent = btn.closest('.tier-card').querySelector('.tier-name').textContent === 'Standard'
+                        ? 'Select ' + btn.closest('.tier-card').querySelector('.tier-name').textContent
+                        : 'Select ' + btn.closest('.tier-card').querySelector('.tier-name').textContent;
+                });
+
+                this.querySelector('.tier-select-btn').textContent = '✓ Selected';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tresor - Messages That Wait for You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #111827;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #6366F1;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #6366F1;
+            border: 2px solid #6366F1;
+        }
+
+        .btn-secondary:hover {
+            background: #F9FAFB;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8rem 2rem 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="2" fill="white" opacity="0.1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta .btn {
+            font-size: 1.125rem;
+            padding: 1rem 2rem;
+        }
+
+        /* Trust Indicators */
+        .trust-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .trust-item {
+            text-align: center;
+        }
+
+        .trust-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .trust-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            transition: transform 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+
+        .step p {
+            color: #6B7280;
+            font-size: 1rem;
+        }
+
+        /* Use Cases Section */
+        .use-cases {
+            padding: 6rem 2rem;
+            background: #F9FAFB;
+        }
+
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .use-case {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .use-case:hover {
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .use-case-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .use-case h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #111827;
+        }
+
+        .use-case p {
+            color: #6B7280;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: #111827;
+            color: #9CA3AF;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: #6366F1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .trust-indicators {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">🔒 Tresor</div>
+        <div class="nav-links">
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#use-cases" class="nav-link">Use Cases</a>
+            <a href="#pricing" class="nav-link">Pricing</a>
+            <a href="#" class="btn btn-secondary">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Messages That Wait for You</h1>
+            <p>Send encrypted messages to your future self. Guaranteed delivery using blockchain technology.</p>
+
+            <div class="hero-cta">
+                <a href="#" class="btn btn-primary">Create Your First Message</a>
+                <a href="#how-it-works" class="btn btn-secondary">Learn How It Works</a>
+            </div>
+
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <div class="trust-icon">🔒</div>
+                    <h3>Military-Grade Encryption</h3>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">⛓️</div>
+                    <h3>Blockchain-Secured</h3>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">📅</div>
+                    <h3>Guaranteed Time-Lock</h3>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">💰</div>
+                    <h3>Pay-Once, No Subscriptions</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">✍️</div>
+                    <h3>1. Write & Lock</h3>
+                    <p>Write your message and choose your unlock date. Add attachments, set a password, and personalize your time capsule.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">🔐</div>
+                    <h3>2. Encrypt & Deploy</h3>
+                    <p>Your message is encrypted using AES-256-GCM and split into fragments distributed across multiple blockchains using Shamir Secret Sharing.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">📬</div>
+                    <h3>3. Automatic Unlock</h3>
+                    <p>On your chosen date, the message fragments are automatically retrieved and reassembled. You'll receive an email notification.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; padding: 2rem; background: #F9FAFB; border-radius: 16px; text-align: center;">
+                <h3 style="color: #6366F1; font-size: 1.5rem; margin-bottom: 1rem;">🔒 Cryptographically Secure</h3>
+                <p style="color: #6B7280; max-width: 700px; margin: 0 auto;">No one can access your message before the unlock date—not even us. We use Shamir Secret Sharing (3-of-5 threshold) to ensure your message requires multiple blockchain fragments to decrypt.</p>
+                <a href="#" style="color: #6366F1; text-decoration: none; margin-top: 1rem; display: inline-block; font-weight: 600;">View Technical Details →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases" id="use-cases">
+        <div class="container">
+            <h2 class="section-title">Perfect For...</h2>
+
+            <div class="use-case-grid">
+                <div class="use-case">
+                    <div class="use-case-icon">💭</div>
+                    <h3>Future Self Messages</h3>
+                    <p>Write to yourself in 1, 5, or 10 years. Set goals, share wisdom, or just say hello to your future self.</p>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-icon">🎂</div>
+                    <h3>Birthday Surprises</h3>
+                    <p>Create heartfelt birthday messages for loved ones, delivered on their special day years from now.</p>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-icon">👶</div>
+                    <h3>Graduation Messages</h3>
+                    <p>Write to your children or students, to be opened when they graduate high school or college.</p>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-icon">💼</div>
+                    <h3>Business Communications</h3>
+                    <p>Deferred announcements, time-locked contracts, or scheduled important disclosures.</p>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-icon">🎄</div>
+                    <h3>Holiday Traditions</h3>
+                    <p>Create annual New Year's messages or holiday traditions that unlock every year.</p>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-icon">🏛️</div>
+                    <h3>Digital Time Capsules</h3>
+                    <p>Preserve memories, photos, and messages for future generations to discover.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Preview -->
+    <section style="padding: 6rem 2rem; background: white;">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p style="text-align: center; color: #6B7280; font-size: 1.125rem; margin-bottom: 3rem;">Pay once per message. No subscriptions, no hidden fees.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+                <div style="padding: 2rem; border: 2px solid #E5E7EB; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Budget</h3>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #6366F1; margin-bottom: 1rem;">$0.50</div>
+                    <ul style="list-style: none; color: #6B7280; text-align: left; margin-bottom: 1.5rem;">
+                        <li style="padding: 0.5rem 0;">✓ Batch deployment</li>
+                        <li style="padding: 0.5rem 0;">✓ Password encryption</li>
+                        <li style="padding: 0.5rem 0;">✓ Email delivery</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 2rem; border: 3px solid #6366F1; border-radius: 16px; text-align: center; position: relative; transform: scale(1.05); box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #6366F1; color: white; padding: 0.25rem 1rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600;">RECOMMENDED</div>
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Standard</h3>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #6366F1; margin-bottom: 1rem;">$3.00</div>
+                    <ul style="list-style: none; color: #6B7280; text-align: left; margin-bottom: 1.5rem;">
+                        <li style="padding: 0.5rem 0;">✓ Immediate deployment</li>
+                        <li style="padding: 0.5rem 0;">✓ 3-of-5 blockchain distribution</li>
+                        <li style="padding: 0.5rem 0;">✓ Full encryption</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;">Get Started</button>
+                </div>
+
+                <div style="padding: 2rem; border: 2px solid #E5E7EB; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Premium</h3>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #6366F1; margin-bottom: 1rem;">$13.00</div>
+                    <ul style="list-style: none; color: #6B7280; text-align: left; margin-bottom: 1.5rem;">
+                        <li style="padding: 0.5rem 0;">✓ 5-of-7 distribution</li>
+                        <li style="padding: 0.5rem 0;">✓ Maximum redundancy</li>
+                        <li style="padding: 0.5rem 0;">✓ Priority support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Create Your First Time-Locked Message?</h2>
+            <p>Join thousands of users preserving their memories and messages for the future.</p>
+            <a href="#" class="btn btn-primary" style="font-size: 1.25rem; padding: 1.25rem 2.5rem;">Get Started Free</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#" class="footer-link">About</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Terms of Service</a>
+            <a href="#" class="footer-link">Technical Details</a>
+            <a href="#" class="footer-link">Support</a>
+            <a href="#" class="footer-link">Blog</a>
+        </div>
+        <p>&copy; 2024 Tresor. All rights reserved.</p>
+    </footer>
+</body>
+</html>

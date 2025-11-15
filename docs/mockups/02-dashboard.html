@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Tresor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F9FAFB;
+            color: #111827;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            padding: 0.5rem 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            width: 300px;
+            font-size: 0.875rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #6B7280;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #F3F4F6;
+            color: #6366F1;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome {
+            margin-bottom: 2rem;
+        }
+
+        .welcome h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome p {
+            color: #6B7280;
+        }
+
+        /* Stats Cards */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Create Button */
+        .btn-create {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #E5E7EB;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6B7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: #6366F1;
+            border-bottom-color: #6366F1;
+        }
+
+        .tab:hover {
+            color: #6366F1;
+        }
+
+        /* Message Cards */
+        .messages {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .message-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .message-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .message-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-emoji {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .message-date {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        .message-info {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-budget {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-standard {
+            background: #E0E7FF;
+            color: #4F46E5;
+        }
+
+        .badge-premium {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        /* Progress Bar */
+        .progress {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
+            border-radius: 999px;
+            transition: width 0.3s;
+        }
+
+        .status-deploying {
+            color: #F59E0B;
+        }
+
+        .status-pending {
+            color: #6B7280;
+        }
+
+        .status-delivered {
+            color: #10B981;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .empty-state p {
+            color: #6B7280;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem;
+            }
+
+            .search-bar {
+                width: 200px;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .message-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">🔒 Tresor</div>
+        <div class="nav-right">
+            <input type="text" class="search-bar" placeholder="Search messages...">
+            <button class="icon-btn">⚙️</button>
+            <div class="avatar">JD</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Welcome Section -->
+        <div class="welcome">
+            <h1>Welcome back, John! 👋</h1>
+            <p>Here's what's happening with your messages</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-icon">🔒</div>
+                <div class="stat-label">Locked Messages</div>
+                <div class="stat-value">5</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏰</div>
+                <div class="stat-label">Unlocking This Week</div>
+                <div class="stat-value">2</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📬</div>
+                <div class="stat-label">Messages Delivered</div>
+                <div class="stat-value">12</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-label">Total Spent</div>
+                <div class="stat-value">$34.50</div>
+            </div>
+        </div>
+
+        <!-- Create New Message Button -->
+        <button class="btn-create">+ Create New Message</button>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active">Pending</button>
+            <button class="tab">Upcoming</button>
+            <button class="tab">Delivered</button>
+            <button class="tab">All Messages</button>
+        </div>
+
+        <!-- Message Cards -->
+        <div class="messages">
+            <!-- Message 1 - Deploying -->
+            <div class="message-card">
+                <div class="message-header">
+                    <div>
+                        <div class="message-title">
+                            <span class="message-emoji">🎂</span>
+                            Birthday Message for Sarah
+                        </div>
+                        <div class="message-date">Unlocks: December 15, 2024 (in 28 days)</div>
+                    </div>
+                </div>
+
+                <div class="message-info">
+                    <div class="info-item">
+                        <span class="badge badge-standard">Standard</span>
+                    </div>
+                    <div class="info-item">
+                        📧 sarah@example.com
+                    </div>
+                    <div class="info-item">
+                        📅 Created Nov 17, 2024
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-label">
+                        <span class="status-deploying">⏰ Deploying to blockchains...</span>
+                        <span>60%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message 2 - Pending Batch -->
+            <div class="message-card">
+                <div class="message-header">
+                    <div>
+                        <div class="message-title">
+                            <span class="message-emoji">💭</span>
+                            Dear Future Me - 2025 Goals
+                        </div>
+                        <div class="message-date">Unlocks: January 1, 2025 (in 47 days)</div>
+                    </div>
+                </div>
+
+                <div class="message-info">
+                    <div class="info-item">
+                        <span class="badge badge-budget">Budget</span>
+                    </div>
+                    <div class="info-item">
+                        📧 Myself
+                    </div>
+                    <div class="info-item">
+                        📅 Created Nov 16, 2024
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-label">
+                        <span class="status-pending">Pending Batch Deployment</span>
+                        <span>—</span>
+                    </div>
+                    <p style="color: #6B7280; font-size: 0.875rem; margin-top: 0.5rem;">
+                        Budget tier messages are deployed in daily batches at midnight
+                    </p>
+                </div>
+            </div>
+
+            <!-- Message 3 - Deployed -->
+            <div class="message-card">
+                <div class="message-header">
+                    <div>
+                        <div class="message-title">
+                            <span class="message-emoji">🎄</span>
+                            Christmas Wishes for Family
+                        </div>
+                        <div class="message-date">Unlocks: December 25, 2024 (in 38 days)</div>
+                    </div>
+                </div>
+
+                <div class="message-info">
+                    <div class="info-item">
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                    <div class="info-item">
+                        📧 family@example.com
+                    </div>
+                    <div class="info-item">
+                        📎 2 attachments
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-label">
+                        <span class="status-delivered">✅ Deployed Successfully</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message 4 - Time Capsule -->
+            <div class="message-card">
+                <div class="message-header">
+                    <div>
+                        <div class="message-title">
+                            <span class="message-emoji">🏛️</span>
+                            2024 Time Capsule
+                        </div>
+                        <div class="message-date">Unlocks: November 17, 2029 (in 5 years)</div>
+                    </div>
+                </div>
+
+                <div class="message-info">
+                    <div class="info-item">
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                    <div class="info-item">
+                        📧 Myself
+                    </div>
+                    <div class="info-item">
+                        📎 12 attachments
+                    </div>
+                    <div class="info-item">
+                        💾 4.2 MB
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-label">
+                        <span class="status-delivered">✅ Deployed Successfully</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message 5 - Work Related -->
+            <div class="message-card">
+                <div class="message-header">
+                    <div>
+                        <div class="message-title">
+                            <span class="message-emoji">💼</span>
+                            Q1 2025 Product Launch Announcement
+                        </div>
+                        <div class="message-date">Unlocks: March 1, 2025 (in 104 days)</div>
+                    </div>
+                </div>
+
+                <div class="message-info">
+                    <div class="info-item">
+                        <span class="badge badge-standard">Standard</span>
+                    </div>
+                    <div class="info-item">
+                        📧 team@company.com
+                    </div>
+                    <div class="info-item">
+                        📅 Created Nov 15, 2024
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-label">
+                        <span class="status-delivered">✅ Deployed Successfully</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
